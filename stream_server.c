@@ -7,6 +7,8 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <pthread.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 #define LISTEN_BACKLOG 50
 #define BUFF_SIZE 256
@@ -60,7 +62,7 @@ void *ptr_write_func(void *ptr_new_socket_fd)
     while (1) {
         memset(sendbuff, '0', BUFF_SIZE);
 	    memset(recvbuff, '0', BUFF_SIZE);
-        printf("\n>> ");
+        printf("\n");
         fgets(sendbuff, BUFF_SIZE, stdin);   //fgets() lay data tu stdin va ghi vao sendbuff
 
         /* Gửi thông điệp tới server bằng hàm write 
@@ -87,6 +89,13 @@ int main(int argc, char *argv[])
     int server_fd, new_socket_fd;
     struct sockaddr_in serv_addr, client_addr;
     pthread_t t_write, t_read;
+    sigset_t new_set;
+    sigset_t old_set;
+    sigemptyset(&new_set);
+    sigemptyset(&old_set);
+
+    
+
     /* Đọc portnumber trên command line */
     if (argc < 2) {
         printf("No port provided\ncommand: ./server <port number>\n");
@@ -126,8 +135,11 @@ int main(int argc, char *argv[])
     while (1) {
         printf("Server is listening at port : %d \n....\n",port_no);
 		new_socket_fd  = accept(server_fd, (struct sockaddr*)&client_addr, (socklen_t *)&len); 
-		if (new_socket_fd == -1)
+		if (new_socket_fd == -1) 
             handle_error("accept()");
+
+        sigaddset(&new_set, SIGINT);
+        sigprocmask(SIG_SETMASK, &new_set, &old_set);
 
 		system("clear");
 		
@@ -150,7 +162,12 @@ int main(int argc, char *argv[])
         
         if (pthread_join(t_read, NULL) == -1)
             handle_error("thread_read_join");
+        
+        if (sigismember(&new_set, SIGINT) == 1) {
+            sigdelset(&new_set, SIGINT);
+            sigprocmask(SIG_SETMASK, &new_set, &old_set);
         }
+    }
     close(server_fd);
     return 0;
 }

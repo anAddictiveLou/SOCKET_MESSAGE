@@ -32,7 +32,7 @@ void *ptr_write_func(void *ptr_server_fd)
     while (1) {
         memset(sendbuff, '0', BUFF_SIZE);
 	    memset(recvbuff, '0', BUFF_SIZE);
-        printf("\n>> ");
+        printf("\n");
         fgets(sendbuff, BUFF_SIZE, stdin);   //fgets() lay data tu stdin va ghi vao sendbuff
 
         /* Gửi thông điệp tới server bằng hàm write 
@@ -41,6 +41,7 @@ void *ptr_write_func(void *ptr_server_fd)
         numb_write = write(server_fd, sendbuff, sizeof(sendbuff));
         if (numb_write == -1)     
             handle_error("write()");
+        
         if (strncmp("exit", sendbuff, 4) == 0) {
             printf("Client exit ...\n");
             pthread_cancel(tmp_thread);
@@ -92,7 +93,6 @@ int main(int argc, char *argv[])
     struct sockaddr_in serv_addr;
     pthread_t t_write, t_read;
     signal(SIGINT, func);
-    //pthread_t t0;
 
 
 	memset(&serv_addr, '0',sizeof(serv_addr));
@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
         handle_error("socket()");
 	
     /* Kết nối tới server*/
-    if (connect(server_fd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) == -1)
+    if (connect(server_fd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) == -1) 
         handle_error("connect()");
 
     printf("Client : got connection\n");
