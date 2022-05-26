@@ -1,7 +1,19 @@
 # SOCKET_MESSAGE
+Server and client chat with each other
 
-make
-    ./server <port>
-    ./client <ipv4_address> <port>
+# Server:
+!!!Only finishing when type exit!!!
+# Client:
+!!!Only finishing when type exit!!!
+# Command line
+First step
 
-  
+~$ make clean ; make 
+
+Second step
+
+~$ ./server <port>
+
+From other terminal
+
+~$ ./client <ipv4_address> <port>
