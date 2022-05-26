@@ -1,5 +1,5 @@
 # SOCKET_MESSAGE
-Server and client chat with each other
+Server and client send and receive messages with each other in parallel.
 
 # Server:
 !!!Only finishing when type exit!!!
