@@ -60,7 +60,7 @@ void *ptr_write_func(void *ptr_new_socket_fd)
     while (1) {
         memset(sendbuff, '0', BUFF_SIZE);
 	    memset(recvbuff, '0', BUFF_SIZE);
-        printf("\n");
+        printf("\n>> ");
         fgets(sendbuff, BUFF_SIZE, stdin);   //fgets() lay data tu stdin va ghi vao sendbuff
 
         /* Gửi thông điệp tới server bằng hàm write 
