@@ -2,9 +2,9 @@
 Server and client send and receive messages with each other in parallel.
 
 # Server:
-!!!Only finishing when type exit!!!
+!!!Only successful finshing when typing exit!!!
 # Client:
-!!!Only finishing when type exit!!!
+!!!Only successful finishing when typing exit!!!
 # Command line
 First step
 
